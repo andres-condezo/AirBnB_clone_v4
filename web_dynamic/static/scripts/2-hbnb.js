@@ -1,4 +1,5 @@
-const url = 'http://0.0.0.0:5001/api/v1/status/';
+const url = 'http://localhost:5001/api/v1/status//';
+//const url = 'http://0.0.0.0:5001/api/v1/status/';
 $(document).ready(function () {
   const selectAmenities = {};
   $('input').change(function () {
@@ -13,6 +14,8 @@ $(document).ready(function () {
   $.get(url, function (data) {
     const cls = 'available';
     const apiStatus = $('div#api_status');
+    console.log("Holaaaa");
+    console.log(data);
     if (data.status == 'OK') { apiStatus.addClass(cls); } else { apiStatus.removeClass(cls); }
   });
 });
