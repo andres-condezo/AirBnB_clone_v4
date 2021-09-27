@@ -65,7 +65,7 @@ button:hover {
     padding-bottom: 15px;
     height: 300px;
     overflow-y: scroll;
-    scrollbar-width: auto;
+    scrollbar-width: 0;
     max-height: 300px;
     position: absolute;
     top:100%;
@@ -73,7 +73,7 @@ button:hover {
 
 /* width */
 .popover::-webkit-scrollbar {
-  width: 14px;
+  width: 0;
 }
 
 /* Track */
