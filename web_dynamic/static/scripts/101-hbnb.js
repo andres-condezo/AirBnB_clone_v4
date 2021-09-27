@@ -13,6 +13,7 @@ $(document).ready(function () {
       delete selectAmenities[$(this).attr('data-id')];
     }
     $('.amenities h4').text(Object.values(selectAmenities).join(', '));
+    $('.amenities-tooltip').text(Object.values(selectAmenities).join(', '));
   });
 
   $('.state-check').change(function () {
@@ -22,6 +23,7 @@ $(document).ready(function () {
       delete selectStates[$(this).attr('data-id')];
     }
     $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
+    $('.states-tooltip').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
   });
 
   $('.city-check').change(function () {
@@ -31,6 +33,7 @@ $(document).ready(function () {
       delete selectCities[$(this).attr('data-id')];
     }
     $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
+    $('.states-tooltip').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
   });
 
   $.get(url_api + 'status', function (data) {
