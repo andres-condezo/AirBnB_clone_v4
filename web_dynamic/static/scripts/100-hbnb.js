@@ -6,13 +6,34 @@ const selectStates = {};
 const selectCities = {};
 
 $(document).ready(function () {
-  $('input').change(function () {
+  $('.amenitie-check').change(function () {
     if ($(this).is(':checked')) {
       selectAmenities[$(this).attr('data-id')] = $(this).attr('data-name');
     } else {
       delete selectAmenities[$(this).attr('data-id')];
     }
     $('.amenities h4').text(Object.values(selectAmenities).join(', '));
+    console.log(selectAmenities);
+  });
+
+  $('.state-check').change(function () {
+    if ($(this).is(':checked')) {
+      selectStates[$(this).attr('data-id')] = $(this).attr('data-name');
+    } else {
+      delete selectStates[$(this).attr('data-id')];
+    }
+    $('.locations h4').text(Object.values(selectStates).join(', '));
+    console.log(selectStates);
+  });
+
+  $('.city-check').change(function () {
+    if ($(this).is(':checked')) {
+      selectCities[$(this).attr('data-id')] = $(this).attr('data-name');
+    } else {
+      delete selectCities[$(this).attr('data-id')];
+    }
+    $('.locations h4').text(Object.values(selectCities).join(', '));
+    console.log(selectCities);
   });
 
   $.get(url_api + 'status', function (data) {
@@ -25,13 +46,11 @@ $(document).ready(function () {
   $.get(url_api + 'users', (data) => {
     let user;
     for (user of data) {
-      console.log(user);
       users_name[user.id] = `${user.first_name} ${user.last_name}`;
     }
   });
 
   function createArticle (place) {
-    console.log(place);
     return `<article>
                   <div class="title_box">
                     <h2>${place.name}</h2>
@@ -82,8 +101,8 @@ $(document).ready(function () {
     $('section.places').html('');
     const filters = {};
     filters.amenities = Object.keys(selectAmenities);
-    filters.states = Object.keys(checkedStates);
-    filters.cities = Object.keys(checkedCities);
+    filters.states = Object.keys(selectStates);
+    filters.cities = Object.keys(selectCities);
     getPlaces(url_api + 'places_search', filters);//
   });
 });
