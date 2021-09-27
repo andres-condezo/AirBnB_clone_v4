@@ -1,9 +1,12 @@
-//const url_api = 'http://0.0.0.0:5001/api/v1/';
+// const url_api = 'http://0.0.0.0:5001/api/v1/';
 const url_api = 'http://localhost:5001/api/v1/';
 
 const selectAmenities = {};
+const selectStates = {};
+const selectCities = {};
+
 $(document).ready(function () {
-  $('input').change(function () {
+  $('.amenitie-check').change(function () {
     if ($(this).is(':checked')) {
       selectAmenities[$(this).attr('data-id')] = $(this).attr('data-name');
     } else {
@@ -12,23 +15,47 @@ $(document).ready(function () {
     $('.amenities h4').text(Object.values(selectAmenities).join(', '));
   });
 
-  $.get(url_api + "status", function (data) {
+  $('.state-check').change(function () {
+    if ($(this).is(':checked')) {
+      selectStates[$(this).attr('data-id')] = $(this).attr('data-name');
+    } else {
+      delete selectStates[$(this).attr('data-id')];
+    }
+    $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
+  });
+
+  $('.city-check').change(function () {
+    if ($(this).is(':checked')) {
+      selectCities[$(this).attr('data-id')] = $(this).attr('data-name');
+    } else {
+      delete selectCities[$(this).attr('data-id')];
+    }
+    $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
+  });
+
+  $.get(url_api + 'status', function (data) {
     const cls = 'available';
     const apiStatus = $('div#api_status');
     if (data.status == 'OK') { apiStatus.addClass(cls); } else { apiStatus.removeClass(cls); }
   });
-  
+
   const users_name = {};
-  $.get(url_api + "users", (data) => {
+  $.get(url_api + 'users', (data) => {
     let user;
     for (user of data) {
-      console.log(user);
       users_name[user.id] = `${user.first_name} ${user.last_name}`;
     }
   });
+  const all_states = {};
+  $.get(url_api + 'states', (states) => {
+    let state;
+    for (state of states) {
+      all_states[state.name] = state.id;
+    }
+  });
+  console.log(all_states);
 
   function createArticle (place) {
-    console.log(place);
     return `<article>
                   <div class="title_box">
                     <h2>${place.name}</h2>
@@ -58,7 +85,7 @@ $(document).ready(function () {
                   </div>
                 </article>`;
   }
-  function getPlaces(url, body) {
+  function getPlaces (url, body) {
     $.ajax({
       url: url,
       type: 'POST',
@@ -71,15 +98,16 @@ $(document).ready(function () {
         });
       }
     });
-  };
+  }
 
-  getPlaces (url_api + "places_search", {})
+  getPlaces(url_api + 'places_search', {});
 
   $('.container .filters button').click(() => {
     $('section.places').html('');
     const filters = {};
-    filters["amenities"] = Object.keys(selectAmenities);
-    getPlaces(url_api + "places_search", filters);//
+    filters.amenities = Object.keys(selectAmenities);
+    filters.states = Object.keys(selectStates);
+    filters.cities = Object.keys(selectCities);
+    getPlaces(url_api + 'places_search', filters);//
   });
-
 });
