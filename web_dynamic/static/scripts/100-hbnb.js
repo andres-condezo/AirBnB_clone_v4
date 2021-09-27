@@ -22,7 +22,7 @@ $(document).ready(function () {
     } else {
       delete selectStates[$(this).attr('data-id')];
     }
-    $('.locations h4').text(Object.values(selectStates).join(', '));
+    $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
     console.log(selectStates);
   });
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
     } else {
       delete selectCities[$(this).attr('data-id')];
     }
-    $('.locations h4').text(Object.values(selectCities).join(', '));
+    $('.locations h4').text([...Object.values(selectStates), ...Object.values(selectCities)].join(', '));
     console.log(selectCities);
   });
 
