@@ -1,7 +1,10 @@
-//const url_api = 'http://0.0.0.0:5001/api/v1/';
+// const url_api = 'http://0.0.0.0:5001/api/v1/';
 const url_api = 'http://localhost:5001/api/v1/';
 
 const selectAmenities = {};
+const selectStates = {};
+const selectCities = {};
+
 $(document).ready(function () {
   $('input').change(function () {
     if ($(this).is(':checked')) {
@@ -12,14 +15,14 @@ $(document).ready(function () {
     $('.amenities h4').text(Object.values(selectAmenities).join(', '));
   });
 
-  $.get(url_api + "status", function (data) {
+  $.get(url_api + 'status', function (data) {
     const cls = 'available';
     const apiStatus = $('div#api_status');
     if (data.status == 'OK') { apiStatus.addClass(cls); } else { apiStatus.removeClass(cls); }
   });
-  
+
   const users_name = {};
-  $.get(url_api + "users", (data) => {
+  $.get(url_api + 'users', (data) => {
     let user;
     for (user of data) {
       console.log(user);
@@ -58,7 +61,7 @@ $(document).ready(function () {
                   </div>
                 </article>`;
   }
-  function getPlaces(url, body) {
+  function getPlaces (url, body) {
     $.ajax({
       url: url,
       type: 'POST',
@@ -71,17 +74,16 @@ $(document).ready(function () {
         });
       }
     });
-  };
+  }
 
-  getPlaces (url_api + "places_search", {})
+  getPlaces(url_api + 'places_search', {});
 
   $('.container .filters button').click(() => {
     $('section.places').html('');
     const filters = {};
-    filters["amenities"] = Object.keys(selectAmenities)
-    //filters.states = Object.keys(checkedStates).filter((id) => typeof (checkedStates[id]) === 'string');
-    //filters.cities= Object.keys(checkedCities).filter((id) => typeof (checkedCities[id]) === 'string');
-    getPlaces(url_api + "places_search", filters);//
+    filters.amenities = Object.keys(selectAmenities);
+    filters.states = Object.keys(checkedStates);
+    filters.cities = Object.keys(checkedCities);
+    getPlaces(url_api + 'places_search', filters);//
   });
-
 });
