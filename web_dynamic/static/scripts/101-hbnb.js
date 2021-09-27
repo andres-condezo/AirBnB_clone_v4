@@ -46,16 +46,19 @@ $(document).ready(function () {
       users_name[user.id] = `${user.first_name} ${user.last_name}`;
     }
   });
-  const all_states = {};
-  $.get(url_api + 'states', (states) => {
-    let state;
-    for (state of states) {
-      all_states[state.name] = state.id;
+
+  const places_review = {};
+  $.get(url_api + 'reviews', (data) => {
+    let review;
+    for (review of data) {
+      const reviews_same_place = {};
+      places_review[review.place_id] = review.text;
     }
   });
-  console.log(all_states);
+  console.log(places_review);
 
   function createArticle (place) {
+    console.log(place);
     return `<article>
                   <div class="title_box">
                     <h2>${place.name}</h2>
@@ -82,6 +85,14 @@ $(document).ready(function () {
                   </div>
                   <div class="description">
                     ${place.description}
+                  </div>
+                  <div class="reviews">
+                  <h2> Reviews </h2> 
+                  <span> 
+                    show
+                  </span>
+                    ${users_name[places_review[place.id].user_id]}
+                    ${places_review[place.id]}
                   </div>
                 </article>`;
   }

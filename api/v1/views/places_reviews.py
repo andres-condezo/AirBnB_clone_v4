@@ -8,6 +8,18 @@ from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
+@app_views.route('/reviews', methods=['GET'],
+                 strict_slashes=False)
+def get_all_reviews():
+    """
+    Retrieves the list of all Review objects of a Place
+    """
+    all_reviews = storage.all(Review).values()
+    list_reviews = []
+    for amenity in all_reviews:
+        list_reviews.append(amenity.to_dict())
+    return jsonify(list_reviews)
+    
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'],
                  strict_slashes=False)
