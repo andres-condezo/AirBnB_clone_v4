@@ -21,12 +21,13 @@
       <section class="filters">
 	      <div class="locations">
 	        <h3>States</h3>
-	        <h4>&nbsp;</h4>
+	        <h4>&nbsp;
+					</h4>
+					<span class="tooltip states-tooltip"></span>
 	        <div class="popover">
 	          <ul>
               {% for state in states %}
 	              <li>
-									
 									<h2>
 										<input class="state-check" type="checkbox" data-id="{{ state[0].id }}" data-name="{{ state[0].name }}">
 										{{ state[0].name }}</h2>
@@ -45,7 +46,9 @@
         </div>
 	      <div class="amenities">
 	        <h3>Amenities</h3>
-	        <h4>&nbsp;</h4>
+	        <h4>&nbsp;
+					</h4>
+					<span class="tooltip amenities-tooltip"></span>
 	        <div class="popover">
 	          <ul>
 	          {% for amenity in amenities %}
