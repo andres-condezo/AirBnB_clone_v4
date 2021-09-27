@@ -1,9 +1,6 @@
-// const url = 'http://localhost:5001/api/v1/status//';
-const url = 'http://localhost:5001/api/v1/status/';
-// const urlPS = 'http://54.87.4.219:49916/api/v1/places_search/';
-// const urlPS = 'http://0.0.0.0:5001/api/v1/places_search/';
-const urlPS = 'http://localhost:5001/api/v1/places_search/';
-// const checkedAmenities = {};
+//const url_api = 'http://0.0.0.0:5001/api/v1/';
+const url_api = 'http://localhost:5001/api/v1/';
+
 const selectAmenities = {};
 $(document).ready(function () {
   $('input').change(function () {
@@ -13,16 +10,25 @@ $(document).ready(function () {
       delete selectAmenities[$(this).attr('data-id')];
     }
     $('.amenities h4').text(Object.values(selectAmenities).join(', '));
-    console.log(selectAmenities);
   });
 
-  $.get(url, function (data) {
+  $.get(url_api + "status", function (data) {
     const cls = 'available';
     const apiStatus = $('div#api_status');
     if (data.status == 'OK') { apiStatus.addClass(cls); } else { apiStatus.removeClass(cls); }
   });
+  
+  const users_name = {};
+  $.get(url_api + "users", (data) => {
+    let user;
+    for (user of data) {
+      console.log(user);
+      users_name[user.id] = `${user.first_name} ${user.last_name}`;
+    }
+  });
 
   function createArticle (place) {
+    console.log(place);
     return `<article>
                   <div class="title_box">
                     <h2>${place.name}</h2>
@@ -44,6 +50,9 @@ $(document).ready(function () {
                       ${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}
                     </div>
                   </div>
+                  <div class="user">
+                    <p><b>Owner: </b>${users_name[place.user_id]}</p>
+                  </div>
                   <div class="description">
                     ${place.description}
                   </div>
@@ -64,12 +73,7 @@ $(document).ready(function () {
     });
   };
 
-  getPlaces (urlPS, {})
-
-  
-  //console.log(selectAmenities);
-
-  // Buttom
+  getPlaces (url_api + "places_search", {})
 
   $('.container .filters button').click(() => {
     $('section.places').html('');
@@ -77,8 +81,7 @@ $(document).ready(function () {
     filters["amenities"] = Object.keys(selectAmenities)
     //filters.states = Object.keys(checkedStates).filter((id) => typeof (checkedStates[id]) === 'string');
     //filters.cities= Object.keys(checkedCities).filter((id) => typeof (checkedCities[id]) === 'string');
-    console.log(filters);
-    getPlaces(urlPS, filters);//
+    getPlaces(url_api + "places_search", filters);//
   });
 
 });
